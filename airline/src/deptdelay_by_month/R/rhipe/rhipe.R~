@@ -1,0 +1,15 @@
+#! /usr/bin/env Rscript
+
+library(Rhipe)
+rhinit(TRUE, TRUE)
+
+map <- expression({
+  lapply(seq_along(map.values),function(r){
+    x <- runif(map.values[[r]])
+    rhcollect(map.keys[[r]],c(n=map.values[[r]],mean=mean(x),sd=sd(x)))
+  })
+})
+## Create a job object
+z <- rhmr(map, ofolder="/tmp/test", inout=c(-F¢lapply¢,¢sequence¢),-A
+          N=10,mapred=list(mapred.reduce.tasks=0),jobname=-F¢test¢)-A
+rhex(z)

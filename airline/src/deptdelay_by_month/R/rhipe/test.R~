@@ -1,0 +1,17 @@
+#! /usr/bin/env Rscript
+
+library(Rhipe)
+rhinit(TRUE, TRUE)
+
+map <- expression({
+  parseValues = function(line) {
+      cat("line=", line, "\n")
+  }
+  rhcollect(map.values, parseValues)
+})
+
+## Create a job object
+z <- rhmr(map=map,
+          ifolder="/data/airline/test.dat", ofolder="/tmp/test",
+          inout=c('text', 'text'), jobname='test',mapred=list(mapred.reduce.tasks=0))
+rhex(z)
