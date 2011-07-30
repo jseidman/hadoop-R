@@ -1,0 +1,18 @@
+Example script using Hadoop Interactive (hive) to execute a MapReduce job to
+calculate average departure delays per month for each airline. This example
+uses the airline arrival and departure data available here:
+  
+  http://stat-computing.org/dataexpo/2009/the-data.html
+
+This example assumes the data has been uploaded to "/data/airline/" in HDFS.
+If you've loaded this data into a different directory in HDFS then change the
+"input" value in the hive_stream() function.
+
+This example also assumes you've installed Hadoop, R and Hadoop Interactive. This code has been tested with CDH3 (Hadoop 0.20.2), R 2.12.2 and Hadoop Interactive 0.1-10 on Ubuntu 10.10.
+
+Running the code:
+
+* Set an environment variable pointing to the Hadoop install directory
+    $ export HADOOP_HOME=HADOOP_HOME
+* Execute the script:
+    $ ./hive.R
