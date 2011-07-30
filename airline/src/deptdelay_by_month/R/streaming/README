@@ -1,0 +1,20 @@
+Example MapReduce script using the Hadoop streaming interface to calculate
+average departure delays per month for each airline. This example uses the
+airline arrival and departure data available here:
+  
+  http://stat-computing.org/dataexpo/2009/the-data.html
+
+This example assumes the data has been uploaded to "/data/airline/" in HDFS.
+If you've loaded this data into a different directory in HDFS then change the
+"-input" value in the command line.
+
+This example also assumes you've installed Hadoop and R. This code has been tested with CDH3 (Hadoop 0.20.2) and R 2.12.2 on Ubuntu 10.10.
+
+Running the code:
+
+The following is an example command line to run this example:
+
+$ $HADOOP_HOME/bin/hadoop jar \
+> $HADOOP_HOME/contrib/streaming/hadoop-streaming-*.jar \
+> -input /data/airline/test.dat -output /dept-delay-month \
+> -mapper map.R -reducer reduce.R -file map.R -file reduce.R
