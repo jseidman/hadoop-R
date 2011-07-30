@@ -35,7 +35,7 @@ reduce <- expression(
 
 # Create job object:
 z <- rhmr(map=map, reduce=reduce,
-          ifolder="/data/airline/test.dat", ofolder="/dept-delay-month",
+          ifolder="/data/airline/", ofolder="/dept-delay-month",
           inout=c('text', 'text'), jobname='Avg Departure Delay By Month')
 # Run it:
 rhex(z)
