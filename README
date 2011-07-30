@@ -1,0 +1,19 @@
+Examples of integrating Hadoop and R. This directory contains the following:
+
+airline/
+
+Examples which use the flight arrival and departure data available here: 
+ 
+  http://stat-computing.org/dataexpo/2009/the-data.html
+
+Note that this is the same data set used for many of the examples in the RHIPE documentation. 
+
+The following examples are in this directory:
+
+airline/src/deptdelay_by_month/R/streaming/ - Example that uses the Hadoop streaming MapReduce interface to calculate average departure delay by month for each airline.
+
+airline/src/deptdelay_by_month/R/hive - Example using Hadoop Interactive for running MapReduce code to calculate average departure delay by month for each airline.
+
+airline/src/deptdelay_by_month/R/rhipe - Example using RHIPE to run MapReduce code that calculates average departure delay by month for each airline and then visualize the results.
+
+Instructions for running the code can be found with each example.
