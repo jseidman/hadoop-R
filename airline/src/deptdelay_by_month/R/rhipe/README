@@ -1,0 +1,22 @@
+Example RHIPE script to calculate average departure delays per month for each
+airline. This example uses the airline arrival and departure data available
+here:
+  
+  http://stat-computing.org/dataexpo/2009/the-data.html
+
+This example assumes the data has been uploaded to "/data/airline/" in HDFS.
+If you've loaded this data into a different directory in HDFS then change the
+"ifolder" value in the rhmr() function.
+
+This example also assumes you've installed Hadoop, R, and RHIPE. This code has been tested with CDH3 (Hadoop 0.20.2), R 2.12.2, and RHIPE 0.65.4 on Ubuntu 10.10.
+
+Running the code:
+
+* Set an environment variable pointing to the Hadoop install directory
+    $ export HADOOP=HADOOP_HOME
+* Execute the script:
+    $ ./rhipe.R
+
+When the script completes you should see an Rplots.pdf file containing the plot
+generated from the output data.
+
