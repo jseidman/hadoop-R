@@ -5,7 +5,7 @@ rhinit(TRUE, TRUE)
 
 map <- expression({
   # For each input record, parse out required fields and output new record:
-  mapLine = function(line) {
+  extractDeptDelays = function(line) {
     fields <- unlist(strsplit(line, "\\,"))
     # Skip header lines and bad records:
     if (!(identical(fields[[1]], "Year")) & length(fields) == 29) {
@@ -13,12 +13,13 @@ map <- expression({
      # Skip records where departure dalay is "NA":
       if (!(identical(deptDelay, "NA"))) {
         # field[9] is carrier, field[1] is year, field[2] is month:
-        rhcollect(paste(fields[[9]], "|", fields[[1]], "|", fields[[2]], sep=""), deptDelay)
+        rhcollect(paste(fields[[9]], "|", fields[[1]], "|", fields[[2]], sep=""),
+                  deptDelay)
       }
     }
   }
   # Process each record in map input:
-  lapply(map.values, mapLine)
+  lapply(map.values, extractDeptDelays)
 })
 
 reduce <- expression(
