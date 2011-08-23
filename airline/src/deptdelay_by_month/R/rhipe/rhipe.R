@@ -1,8 +1,13 @@
 #! /usr/bin/env Rscript
 
+# Calculate average departure delays by year and month for each airline in the
+# airline data set (http://stat-computing.org/dataexpo/2009/the-data.html)
+
 library(Rhipe)
 rhinit(TRUE, TRUE)
 
+# Output from map is:
+# "CARRIER|YEAR|MONTH \t DEPARTURE_DELAY"
 map <- expression({
   # For each input record, parse out required fields and output new record:
   extractDeptDelays = function(line) {
@@ -22,28 +27,41 @@ map <- expression({
   lapply(map.values, extractDeptDelays)
 })
 
+# Output from reduce is:
+# YEAR \t MONTH \t RECORD_COUNT \t AIRLINE \t AVG_DEPT_DELAY
 reduce <- expression(
+  pre = {
+    delays <- numeric(0)
+  },
   reduce = {
-    count <- length(reduce.values)
-    avg <- mean(as.numeric(reduce.values))
-    keySplit <- unlist(strsplit(reduce.key, "\\|"))
+    # Depending on size of input, reduce will get called called multiple times
+    # for each key, so accumulate intermediate values in delays vector: 
+    delays <- c(delays, as.numeric(reduce.values))
   },
   post = {
+    # Process all the intermediate values for key:
+    keySplit <- unlist(strsplit(reduce.key, "\\|"))
+    count <- length(delays)
+    avg <- mean(delays)
     rhcollect(keySplit[[2]], 
               paste(keySplit[[3]], count, keySplit[[1]], avg, sep="\t"))
   }
 )
 
+inputPath <- "/data/airline/1987.csv"
+outputPath <- "/dept-delay-month"
+
 # Create job object:
 z <- rhmr(map=map, reduce=reduce,
-          ifolder="/data/airline/", ofolder="/dept-delay-month",
-          inout=c('text', 'text'), jobname='Avg Departure Delay By Month')
+          ifolder=inputPath, ofolder=outputPath,
+          inout=c('text', 'text'), jobname='Avg Departure Delay By Month',
+          mapred=list(mapred.reduce.tasks=1))
 # Run it:
 rhex(z)
 
 # Visualize results:
 library(lattice)
-rhget("/dept-delay-month/part-r-00000", "deptdelay.dat")
+rhget("/dept-delay-month/part-*", "deptdelay.dat")
 deptdelays.monthly.full <- read.delim("deptdelay.dat", header=F)
 names(deptdelays.monthly.full)<- c("Year","Month","Count","Airline","Delay")
 deptdelays.monthly.full$Year <- as.character(deptdelays.monthly.full$Year)
