@@ -48,7 +48,7 @@ reduce <- expression(
   }
 )
 
-inputPath <- "/data/airline/1987.csv"
+inputPath <- "/data/airline/"
 outputPath <- "/dept-delay-month"
 
 # Create job object:
@@ -59,11 +59,15 @@ z <- rhmr(map=map, reduce=reduce,
 # Run it:
 rhex(z)
 
-# Visualize results:
 library(lattice)
-rhget("/dept-delay-month/part-*", "deptdelay.dat")
+
+# Get the results from HDFS and use to create a dataframe:
+results <- rhread(paste(outputPath, "/part-*", sep = ""), type = "text")
+write(results, file="deptdelays.dat")
 deptdelays.monthly.full <- read.delim("deptdelay.dat", header=F)
 names(deptdelays.monthly.full)<- c("Year","Month","Count","Airline","Delay")
 deptdelays.monthly.full$Year <- as.character(deptdelays.monthly.full$Year)
+
+# Visualize results:
 h <- histogram(~Delay|Year,data=deptdelays.monthly.full,layout=c(5,5))
 update(h)
