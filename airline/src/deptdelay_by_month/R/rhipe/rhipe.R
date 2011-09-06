@@ -34,7 +34,7 @@ reduce <- expression(
     delays <- numeric(0)
   },
   reduce = {
-    # Depending on size of input, reduce will get called called multiple times
+    # Depending on size of input, reduce will get called multiple times
     # for each key, so accumulate intermediate values in delays vector: 
     delays <- c(delays, as.numeric(reduce.values))
   },
