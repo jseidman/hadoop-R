@@ -48,14 +48,14 @@ reduce <- expression(
   }
 )
 
-inputPath <- "/data/airline/"
+inputPath <- "/data/airline/1987.csv"
 outputPath <- "/dept-delay-month"
 
 # Create job object:
 z <- rhmr(map=map, reduce=reduce,
           ifolder=inputPath, ofolder=outputPath,
           inout=c('text', 'text'), jobname='Avg Departure Delay By Month',
-          mapred=list(mapred.reduce.tasks=1))
+          mapred=list(mapred.reduce.tasks=2))
 # Run it:
 rhex(z)
 
@@ -64,7 +64,7 @@ library(lattice)
 # Get the results from HDFS and use to create a dataframe:
 results <- rhread(paste(outputPath, "/part-*", sep = ""), type = "text")
 write(results, file="deptdelays.dat")
-deptdelays.monthly.full <- read.delim("deptdelay.dat", header=F)
+deptdelays.monthly.full <- read.delim("deptdelays.dat", header=F)
 names(deptdelays.monthly.full)<- c("Year","Month","Count","Airline","Delay")
 deptdelays.monthly.full$Year <- as.character(deptdelays.monthly.full$Year)
 
