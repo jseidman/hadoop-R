@@ -48,7 +48,7 @@ reduce <- expression(
   }
 )
 
-inputPath <- "/data/airline/1987.csv"
+inputPath <- "/data/airline/"
 outputPath <- "/dept-delay-month"
 
 # Create job object:
