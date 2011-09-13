@@ -16,4 +16,6 @@ airline/src/deptdelay_by_month/R/hive - Example using Hadoop Interactive for run
 
 airline/src/deptdelay_by_month/R/rhipe - Example using RHIPE to run MapReduce code that calculates average departure delay by month for each airline and then visualize the results.
 
+airline/src/deptdelay_by_month/R/rmr - Example using Revolution Analytics rmr package to calculate average departure delay by month for each airline.
+
 Instructions for running the code can be found with each example.
