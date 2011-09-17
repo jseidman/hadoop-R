@@ -5,30 +5,26 @@
 # Requires rmr package (https://github.com/RevolutionAnalytics/RHadoop/wiki).
 
 library(rmr)
+csvtextinputformat = function(line) keyval(NULL, unlist(strsplit(line, "\\,")))
 
 deptdelay = function (input, output) {
   mapreduce(input = input,
             output = output,
-            textinputformat = rawtextinputformat,
-            map = function(k, v) {
-              fields <- unlist(strsplit(v, "\\,"))
+            textinputformat = csvtextinputformat,
+            textoutputformat = csvtextoutputformat,
+            map = function(k, fields) {
               # Skip header lines and bad records:
               if (!(identical(fields[[1]], "Year")) & length(fields) == 29) {
                 deptDelay <- fields[[16]]
                 # Skip records where departure dalay is "NA":
                 if (!(identical(deptDelay, "NA"))) {
                   # field[9] is carrier, field[1] is year, field[2] is month:
-                  keyval(paste(fields[[9]], "|", fields[[1]], "|", fields[[2]],
-                         sep=""),
-                         deptDelay)
+                  keyval(c(fields[[9]], fields[[1]], fields[[2]]), deptDelay)
                 }
               }
             },
-            reduce = function(k, vv) {
-              keySplit <- unlist(strsplit(k, "\\|"))
-              keyval(keySplit[[2]], 
-                     paste(keySplit[[3]], length(vv), keySplit[[1]],
-                           mean(as.numeric(vv)), sep="\t"))
+            reduce = function(keySplit, vv) {
+              keyval(keySplit[[2]], c(keySplit[[3]], length(vv), keySplit[[1]], mean(as.numeric(vv))))
             })
 }
 
