@@ -5,13 +5,13 @@
 # Requires rmr package (https://github.com/RevolutionAnalytics/RHadoop/wiki).
 
 library(rmr)
+
 csvtextinputformat = function(line) keyval(NULL, unlist(strsplit(line, "\\,")))
 
 deptdelay = function (input, output) {
   mapreduce(input = input,
             output = output,
             textinputformat = csvtextinputformat,
-            textoutputformat = csvtextoutputformat,
             map = function(k, fields) {
               # Skip header lines and bad records:
               if (!(identical(fields[[1]], "Year")) & length(fields) == 29) {
@@ -28,4 +28,4 @@ deptdelay = function (input, output) {
             })
 }
 
-from.dfs(deptdelay("/data/airline/", "/dept-delay-month"))
+from.dfs(deptdelay("/data/airline/1987.csv", "/dept-delay-month"))
