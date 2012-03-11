@@ -28,4 +28,5 @@ deptdelay = function (input, output) {
             })
 }
 
-from.dfs(deptdelay("/data/airline/1987.csv", "/dept-delay-month"))
+#from.dfs(deptdelay("/data/airline/1987.csv", "/dept-delay-month"))
+from.dfs(deptdelay("/data/airline/", "/dept-delay-month-orig"))
