@@ -9,7 +9,7 @@ while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
   # Skip header lines and bad records:
   if (!(identical(fields[[1]], "Year")) & length(fields) == 29) {
     deptDelay <- fields[[16]]
-    # Skip records where departure dalay is "NA":
+    # Skip records where departure delay is "NA":
     if (!(identical(deptDelay, "NA"))) {
       # field[9] is carrier, field[1] is year, field[2] is month:
       cat(paste(fields[[9]], "|", fields[[1]], "|", fields[[2]], sep=""), "\t",
